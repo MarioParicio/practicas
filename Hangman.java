@@ -188,6 +188,7 @@ public class Hangman {
                 if (Character.compare(letter.charAt(0), letters.get(i)) == 0) {
             // si es así avisar al usuario 
                     System.out.println("letra ya introducida");
+                    tries ++;
                     break;
                      }
                     }
