@@ -1,4 +1,4 @@
-package ahorcado;
+package practicaHangman;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -79,15 +79,12 @@ public class Hangman {
         // TODO: completa el código de este método
         ArrayList<Character> aux = new ArrayList<Character>();
         for (int i = 0; i < secret.length(); i++) {
-            aux.add(letters.get(i));
+            aux.add(secret.charAt(i));
         }
-        if (aux.contains(secret))
-            {
-                tries -= 10;
+        if (letters.containsAll(aux)) {
             return true;
-        } else {    
-        return false;
         }
+            return false;
     }
 
     /**
@@ -110,6 +107,7 @@ public class Hangman {
                 aux += "_";
             }
         }
+        aux = aux.toUpperCase().charAt(0) + aux.substring(1, aux.length());
         return aux;
     }
 
@@ -122,15 +120,15 @@ public class Hangman {
      */
     private static String getNotGuessedLetters(ArrayList<Character> letters) {
         // TODO: completa el código de este método
-        String WordsNotUsed = "";
-        for (int i = 0; i < letters.size(); i++) {
+        String aux = "";
+
             for(int j = 0; j < LETTERS.length(); j++) {
-                if (letters.get(i) == LETTERS.charAt(j)) {
-                    LETTERS.replace(String.valueOf(letters.get(i)), "");
+                if (!letters.contains(LETTERS.charAt(j))) {
+                    aux += LETTERS.charAt(j);
                 }
-            }
-        }
-        return LETTERS;
+                }
+        
+        return aux;
     }
 
     /**
@@ -181,16 +179,16 @@ public class Hangman {
             // obtener la entrada del usuario convertida a minúsculas
             letter = letter.toLowerCase();
             // si no introduce nada volver a mostrar info y pedir letra
-            if (letter.length() == 0) {
-                tries ++;
+            if (letter.length() != 1) {
+                continue;
             }
             // obtener letra introducida
-            
             // comprobar si las letra ya ha sido introducida antes
             for (int i = 0; i < letters.size(); i++) {
                 if (Character.compare(letter.charAt(0), letters.get(i)) == 0) {
             // si es así avisar al usuario 
                     System.out.println("letra ya introducida");
+                    break;
                      }
                     }
             // si no: añadir la letra a la lista de letras introducidas, verificar si la letra está en la palabra 
@@ -202,23 +200,23 @@ public class Hangman {
                         break;
                     } 
                 }
-                
-                
             // si está: informar al jugador, verificar si la palabra se ha adivinado por completo, en ese caso salir ya que ha ganado el juego
-           
+            // Mostrar información de fin: tanto si ha ganado como si ha perdido
+                if (isWordDiscovered(secret, letters, tries) == true) {
+                    System.out.println("Has ganado");
+                    break;
+                    
+                } else if (tries == 1) {
+                    System.out.println("Has perdido");
+                }
             // si no está: informar al jugador y restar un intento
             tries--;
             
         }
+    
 
-        if (isWordDiscovered(secret, letters, tries) == true) {
-            System.out.println("Has ganado");
-        } else {
-            System.out.println("has perdido");
-        }
-        // Mostrar información de fin: tanto si ha ganado como si ha perdido
         
-        System.out.println();
+
 
     }
 
